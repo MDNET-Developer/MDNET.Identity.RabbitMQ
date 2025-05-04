@@ -1,6 +1,7 @@
+﻿using MDNET.Identity.RabbitMQ.Web.ErrorsDescriber;
 using MDNET.Identity.RabbitMQ.Web.Models;
 using Microsoft.EntityFrameworkCore;
-
+using MDNET.Identity.RabbitMQ.Web.Extensions;
 
 namespace MDNET.Identity.RabbitMQ.Web
 {
@@ -9,14 +10,15 @@ namespace MDNET.Identity.RabbitMQ.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddRazorPages();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddIdentityWithPolicy();
+            builder.Services.AddCookieConfigure();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
