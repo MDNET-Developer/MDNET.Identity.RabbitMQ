@@ -84,17 +84,25 @@
                     </ul>
 
                     <!-- Sağ tərəfdəki düymələr (Daxil ol və Qeydiyyat) -->
-                    <div class="navbar-nav">
-                        <!-- Daxil ol düyməsi, icon ilə -->
-                        <a class="nav-link text-white btn btn-outline-success me-3" asp-controller="User" asp-action="LogIn" role="button">
-                            <i class="bi bi-box-arrow-in-right"></i> Daxil ol
-                        </a>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <a><span class="glyphicon glyphicon-user"></span><span>@User.Identity.Name!</span></a>
+                     
+                    }
+                    else
+                    {
+                        <div class="navbar-nav">
+                            <!-- Daxil ol düyməsi, icon ilə -->
+                            <a class="nav-link text-white btn btn-outline-success me-3" asp-controller="User" asp-action="LogIn" role="button">
+                                <i class="bi bi-box-arrow-in-right"></i> Daxil ol
+                            </a>
 
-                        <!-- Qeydiyyat düyməsi, icon ilə -->
-                        <a class="nav-link text-white btn btn-outline-warning" asp-controller="User" asp-action="SignUp" role="button">
-                            <i class="bi bi-person-plus"></i> Qeydiyyat
-                        </a>
-                    </div>
+                            <!-- Qeydiyyat düyməsi, icon ilə -->
+                            <a class="nav-link text-white btn btn-outline-warning" asp-controller="User" asp-action="SignUp" role="button">
+                                <i class="bi bi-person-plus"></i> Qeydiyyat
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>

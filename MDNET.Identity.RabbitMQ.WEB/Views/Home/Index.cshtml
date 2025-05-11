@@ -84,7 +84,9 @@
         <div class="content">
             <h1>MDNET-Developer</h1>
             <p class="lead">Murad Aliyev</p>
-            <a  class="btn btn-primary">Fayl yarat</a>
+            <a class="btn btn-primary @(User.Identity == null || !User.Identity.IsAuthenticated ? "disabled" : "")">
+                Fayl yarat
+            </a>
         </div>
     </section>
 

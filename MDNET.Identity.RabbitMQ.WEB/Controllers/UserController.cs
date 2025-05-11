@@ -45,7 +45,7 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
             {
                 TempData["ResultMessage"] = "Qeydiyyat uğurla başa çatdı !";
                 return RedirectToAction(nameof(UserController.SignUp));
-                _logger.LogError($"Sign up successfully {DateTime.UtcNow}");
+                _logger.LogInformation($"Sign up successfully {DateTime.UtcNow}");
             }
             else
             {
@@ -65,19 +65,28 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult LogIn(LoginViewModel loginViewModel, string returnUrl = null)
+        public async Task<IActionResult> LogIn(LoginViewModel loginViewModel, string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Action(nameof(HomeController), nameof(HomeController.Index));
-            var isUser = _userManager.FindByEmailAsync(loginViewModel.Email);
-            if (isUser != null) {
-                var result = _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, false);
-            }
-            else
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Email və ya şifrə yanlışdır");
+                _logger.LogError($"Login faild {DateTime.UtcNow}");
+                return View(loginViewModel);
             }
-            
-            return View();
+
+            returnUrl = returnUrl ?? Url.Action(nameof(HomeController), nameof(HomeController.Index));
+
+            var hasUser = await _userManager.FindByEmailAsync(loginViewModel.Email);
+            if (hasUser != null)
+            {
+                var result = await _signInManager.PasswordSignInAsync(hasUser, loginViewModel.Password, loginViewModel.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"Login succesfully {DateTime.UtcNow}");
+                    return LocalRedirect(returnUrl);
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Email və ya şifrə yanlışdır");
+            return View(loginViewModel);
         }
     }
 }
