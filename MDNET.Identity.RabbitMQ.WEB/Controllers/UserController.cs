@@ -32,7 +32,7 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
             if (!ModelState.IsValid)
             {
                 return View();
-                _logger.LogError($"Model state is not valide {DateTime.UtcNow}")
+                _logger.LogError($"Model state is not valide {DateTime.UtcNow}");
             }
             var user = new AppUser()
             {
