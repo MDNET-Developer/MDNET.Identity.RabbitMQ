@@ -1,0 +1,53 @@
+﻿@model IEnumerable<UserFile>
+@{
+    ViewData["Title"] = "Files";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-hover mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Ad</th>
+                <th>Yol</th>
+                <th>Uzantı</th>
+                <th>Status</th>
+                <th>Yaradılma vaxtı</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string rowClass = item?.FileStatus == true ? "table-success" : "table-warning";
+                string statusText = item?.FileStatus == true ? "Hazırdır✅" : "Hazırlanır...";
+                bool isDownloadable = item?.FileStatus == true;
+
+                string formattedCreatedTime = item?.CreatedTime?.ToLocalTime().ToString("dd.MM.yyyy HH:mm") ?? "Tarix mövcud deyil";
+                string filePath = item?.FilePath ?? "#";
+
+                <tr class="@rowClass">
+                    <td>@(item?.FileName ?? "Yoxdur")</td>
+                    <td>@(item?.FilePath ?? "Yoxdur")</td>
+                    <td>@(item?.FileExtension ?? "Yoxdur")</td>
+                    <td>@statusText</td>
+                    <td>@formattedCreatedTime</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary @(isDownloadable ? "" : "disabled")"
+                           href="@filePath"
+                           download>
+                            <i class="bi bi-download"></i> Yüklə
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info mt-4">
+        Məlumat mövcud deyil.
+    </div>
+}

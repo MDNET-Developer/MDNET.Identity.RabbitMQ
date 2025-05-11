@@ -24,8 +24,13 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        [Authorize]
+        public IActionResult Files()
         {
             return View();
         }

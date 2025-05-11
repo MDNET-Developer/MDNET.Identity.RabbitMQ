@@ -2,6 +2,9 @@
 using MDNET.Identity.RabbitMQ.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using MDNET.Identity.RabbitMQ.Web.Extensions;
+using Microsoft.Extensions.Options;
+using MDNET.Identity.RabbitMQ.Web.Confugration;
+using MDNET.Identity.RabbitMQ.Web.Services;
 
 namespace MDNET.Identity.RabbitMQ.Web
 {
@@ -10,16 +13,19 @@ namespace MDNET.Identity.RabbitMQ.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.Configure<RabbitMQConfugration>(builder.Configuration.GetSection("RabbitMQ"));
+            builder.Services.AddRabbitMQClientServiceSingleton(builder.Configuration);
+            builder.Services.AddSingleton<RabbitMQClientService>();
+            builder.Services.AddSingleton<RabbitMQPublisher>();
             builder.Services.AddRazorPages();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<AppDbContext>(option =>
-            {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+           
+            builder.Services.AddDbContextExtension(builder.Configuration);
             builder.Services.AddIdentityWithPolicy();
             builder.Services.AddCookieConfigure();
             var app = builder.Build();
+           
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -33,7 +39,7 @@ namespace MDNET.Identity.RabbitMQ.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
             app.MapControllerRoute(

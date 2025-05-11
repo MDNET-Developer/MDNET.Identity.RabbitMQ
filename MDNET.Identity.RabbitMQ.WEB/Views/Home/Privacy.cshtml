@@ -1,6 +1,69 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
+<style>
 
-<p>Use this page to detail your site's privacy policy.</p>
+    #about {
+        background-color: #f9f9f9;
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+        #about h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 20px;
+        }
+
+        #about p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #6b7280;
+        }
+
+        #about .col-md-6 h3 {
+            font-size: 1.5rem;
+            color: #16a34a;
+            margin-bottom: 15px;
+        }
+
+        #about .col-md-6 p {
+            color: #6b7280;
+        }
+
+        #about i {
+            margin-right: 10px;
+            font-size: 1.4rem;
+            vertical-align: middle;
+        }
+
+        #about img {
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+
+</style>
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 mb-4">
+                <h2 class="display-4 text-primary"><i class="bi bi-info-circle-fill"></i> Haqqımızda</h2>
+                <p class="lead">Bizim platformamız, müasir texnologiyaların gücündən istifadə edərək, istifadəçilər üçün güvənli, sürətli və etibarlı xidmətlər təqdim edir. İnnovativ həllərimiz, sadə və intuitiv istifadəçi təcrübəsi ilə birləşərək, hər bir istifadəçiyə maksimum rahatlıq və təhlükəsizlik təmin edir.</p>
+                <p>Saytımızda istifadə etdiyimiz texnologiyalar, istifadəçi məlumatlarını qorumaq və məlumatın düzgün şəkildə ötürülməsi üçün ən yaxşı həlləri təqdim edir. <strong>ASP.NET Identity</strong> və <strong>RabbitMQ</strong> kimi qabaqcıl alətlər istifadə edərək, sizin onlayn təhlükəsizliyinizi və təcrübənizi optimallaşdırırıq.</p>
+                <p>Platformamızda, hər bir istifadəçi üçün unikal bir hesab yaradılır, məlumatlar şifrələnir və təhlükəsizlik protokolları təmin edilir. Bizim məqsədimiz, sizə ən yüksək səviyyəli təhlükəsizlik və sürətli məlumat ötürülməsi ilə xidmət etməkdir.</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <h3 class="h4 text-success"><i class="bi bi-shield-lock-fill"></i> ASP.NET Identity ilə Təhlükəsizlik</h3>
+                <p>Bizim platformamızda istifadəçi məlumatları <strong>ASP.NET Identity</strong> ilə qorunur. Bu texnologiya, istifadəçilərin autentifikasiyası, identifikasiyası və icazə verilməsi üçün geniş imkanlar təklif edir. Hər bir istifadəçi hesabı şifrələnmiş şəkildə saxlanılır, beləliklə məlumatların təhlükəsizliyi təmin edilir.</p>
+                <p>ASP.NET Identity, həmçinin istifadəçilər üçün təhlükəsiz sessiyalar və çox mərhələli autentifikasiya imkanı təqdim edir. Bu, istifadəçilərin şəxsiyyətini doğrulamağımız və onların məlumatlarını mühafizə etməyimiz üçün ən yüksək standartları təmin edir.</p>
+                <h3 class="h4 text-warning"><i class="bi bi-arrow-right-circle-fill"></i> RabbitMQ ilə Məlumat Paylaşımı</h3>
+                <p>Saytımızın arxasında, məlumatların sürətli və etibarlı şəkildə paylanması üçün <strong>RabbitMQ</strong> mesajlaşma brokerindən istifadə edirik. RabbitMQ, asinxron mesajlaşma texnologiyası olaraq məlumatların sistemlər arasında tez və təhlükəsiz şəkildə ötürülməsini təmin edir.</p>
+                <p><img src="https://www.rabbitmq.com/img/logo/rabbitmq-logo.svg" alt="RabbitMQ Logo" style="width: 100px; display: block; margin-top: 10px;" /> RabbitMQ, bizə müxtəlif xidmətlər arasında məlumat mübadiləsini təşkil edərək, real vaxtda əlaqələr qurmağa və məlumatların zədələnmədən ötürülməsini təmin etməyə imkan verir. Bu texnologiya, eyni zamanda yüksək miqdarda məlumatın sürətli şəkildə emal olunmasına da imkan verir.</p>
+                <p>RabbitMQ-nun arxasında olan asinxron işləmə prinsipi, istifadəçi təcrübəsini daha sürətli və etibarlı edir. Bu, sistemin işləmə qabiliyyətini artırır və məlumatların düzgün ötürülməsini təmin edir.</p>
+            </div>
+        </div>
+    </div>
+</section>
+

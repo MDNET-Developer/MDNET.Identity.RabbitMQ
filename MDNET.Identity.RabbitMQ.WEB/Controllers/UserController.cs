@@ -73,20 +73,59 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
                 return View(loginViewModel);
             }
 
-            returnUrl = returnUrl ?? Url.Action(nameof(HomeController), nameof(HomeController.Index));
-
+            
+                returnUrl = returnUrl?? Url.Action(nameof(HomeController.Index), "Home");
             var hasUser = await _userManager.FindByEmailAsync(loginViewModel.Email);
+            if (await _userManager.IsLockedOutAsync(hasUser))
+            {
+                ModelState.AddModelError(string.Empty, "Hesabınız bloklanıb. Zəhmət olmasa bir müddət sonra yenidən cəhd edin.");
+                return View(loginViewModel);
+            }
             if (hasUser != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(hasUser, loginViewModel.Password, loginViewModel.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(hasUser, loginViewModel.Password, loginViewModel.RememberMe, true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"Login succesfully {DateTime.UtcNow}");
                     return LocalRedirect(returnUrl);
                 }
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError(string.Empty, "Çox sayda uğursuz cəhd səbəbilə hesabınız bloklanıb.");
+                }
+                else
+                {
+                    // Maksimum cəhd sayı
+                    int maxAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
+
+                    // Hazırda neçə dəfə uğursuz cəhd olub
+                    int failedAttempts = await _userManager.GetAccessFailedCountAsync(hasUser);
+
+                    int remainingAttempts = maxAttempts - failedAttempts;
+
+                    if (remainingAttempts == 1)
+                    {
+                        ModelState.AddModelError(string.Empty, $"Qalan cəhd sayı: {remainingAttempts}. Zəhmət olmasa diqqətli olun, əks halda hesabınız müvəqqəti bloklanacaq, bu sizin son cəhdinizdir");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, $"Qalan cəhd sayı: {remainingAttempts}.");
+                    }
+
+                }
             }
             ModelState.AddModelError(string.Empty, "Email və ya şifrə yanlışdır");
             return View(loginViewModel);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        // ValidateAntiForgeryToken helps protect against CSRF attacks, especially important for logout.
     }
 }

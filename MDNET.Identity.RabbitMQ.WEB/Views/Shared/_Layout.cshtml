@@ -81,13 +81,30 @@
                         <li class="nav-item btn ">
                             <a style="text-decoration:none" class="btn btn-outline-secondary" asp-area="" asp-controller="Home" asp-action="Privacy">Haqqımızda</a>
                         </li>
+                         <li class="nav-item btn ">
+                            <a style="text-decoration:none" class="btn btn-outline-secondary" asp-area="" asp-controller="Home" asp-action="Files">Fayl sihayıları</a>
+                        </li>
                     </ul>
 
                     <!-- Sağ tərəfdəki düymələr (Daxil ol və Qeydiyyat) -->
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
-                        <a><span class="glyphicon glyphicon-user"></span><span>@User.Identity.Name!</span></a>
-                     
+                        <div class="d-flex align-items-center gap-2">
+                            <!-- User icon and name -->
+                            <a class="text-decoration-none text-dark" href="#">
+                                <i style="color:snow" class="bi bi-person-circle me-1"></i>
+                                <span style="color:snow">@User.Identity.Name</span>
+                            </a>
+
+                            <!-- Logout button -->
+                            <form asp-controller="User" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Çıxış et">
+                                    <i class="bi bi-box-arrow-right me-1"></i> Çıxış et
+                                </button>
+
+                                
+                            </form>
+                        </div>
                     }
                     else
                     {
