@@ -32,7 +32,6 @@ namespace MDNET.Identity.RabbitMQ.Web.Services
             _channel.QueueDeclare(queue: _confugration.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
             _channel.QueueBind(exchange: _confugration.ExchangeName, queue: _confugration.QueueName, routingKey: _confugration.RoutingKey);
             _logger.LogInformation($"RabbitMQ create connection - {DateTime.UtcNow}");
-           
             return _channel;
 
         }

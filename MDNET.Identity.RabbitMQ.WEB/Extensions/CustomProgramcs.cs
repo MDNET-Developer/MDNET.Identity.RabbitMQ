@@ -1,8 +1,6 @@
 ﻿using MDNET.Identity.RabbitMQ.Web.ErrorsDescriber;
 using MDNET.Identity.RabbitMQ.Web.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using RabbitMQ.Client;
 using RabbitMQ.Client;
 namespace MDNET.Identity.RabbitMQ.Web.Extensions
 {
