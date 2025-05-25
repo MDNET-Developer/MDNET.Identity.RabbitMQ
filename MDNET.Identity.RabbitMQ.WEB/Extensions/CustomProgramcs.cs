@@ -1,5 +1,6 @@
 ﻿using MDNET.Identity.RabbitMQ.Web.ErrorsDescriber;
 using MDNET.Identity.RabbitMQ.Web.Models;
+using MDNET.Identity.RabbitMQ.Web.Services;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 namespace MDNET.Identity.RabbitMQ.Web.Extensions
@@ -21,6 +22,11 @@ namespace MDNET.Identity.RabbitMQ.Web.Extensions
                 Uri = new Uri(uri),
                 DispatchConsumersAsync = true//Asinxron metod isletditimiz ucun
             });
+        }
+        public static void CustomServices(this IServiceCollection services)
+        {
+            services.AddSingleton<RabbitMQClientService>();
+            services.AddSingleton<RabbitMQPublisher>();
         }
         public static void AddIdentityWithPolicy(this IServiceCollection services)
         {
