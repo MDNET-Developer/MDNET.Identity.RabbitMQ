@@ -4,50 +4,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (Model != null && Model.Any())
-{
-    <table class="table table-bordered table-hover mt-4">
-        <thead class="table-dark">
-            <tr>
-                <th>Ad</th>
-                <th>Yol</th>
-                <th>Uzantı</th>
-                <th>Status</th>
-                <th>Yaradılma vaxtı</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                string rowClass = item?.FileStatus == true ? "table-success" : "table-warning";
-                string statusText = item?.FileStatus == true ? "Hazırdır✅" : "Hazırlanır...";
-                bool isDownloadable = item?.FileStatus == true;
 
-                string formattedCreatedTime = item?.CreatedTime?.ToLocalTime().ToString("dd.MM.yyyy HH:mm") ?? "Tarix mövcud deyil";
-                string filePath = item?.FilePath ?? "#";
-
-                <tr class="@rowClass">
-                    <td>@(item?.FileName ?? "Yoxdur")</td>
-                    <td>@(item?.FilePath ?? "Yoxdur")</td>
-                    <td>@(item?.FileExtension ?? "Yoxdur")</td>
-                    <td>@statusText</td>
-                    <td>@formattedCreatedTime</td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-primary @(isDownloadable ? "" : "disabled")"
-                           href="@filePath"
-                           download>
-                            <i class="bi bi-download"></i> Yüklə
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-info mt-4">
-        Məlumat mövcud deyil.
+<div class="container-fuild">
+    <div class="container mt-4">
+        <div class="mb-3">
+            <h2><i class="bi bi-folder2-open"></i> Fayllar</h2>
+        </div>
+        
     </div>
-}
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-hover mt-3 shadow-sm">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Ad</th>
+                    <th>Yol</th>
+                    <th>Uzantı</th>
+                    <th>Status</th>
+                    <th>Yaradılma vaxtı</th>
+                    <th>Əməliyyat</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var item in Model)
+                {
+                    string rowClass = item?.FileStatus == (int)FileStatus.Created ? "table-success" : "table-warning";
+                    string statusText = item?.FileStatus == (int)FileStatus.Created ? "Hazırdır ✅" : "Hazırlanır...";
+                    bool isDownloadable = item?.FileStatus == (int)FileStatus.Created;
+                    string formattedCreatedTime = item?.CreatedTime?.ToLocalTime().ToString("dd.MM.yyyy HH:mm") ?? "Tarix mövcud deyil";
+                    string filePath = item?.FilePath ?? "#";
+
+                    <tr class="@rowClass align-middle">
+                        <td>@(item?.FileName ?? "Yoxdur")</td>
+                        <td class="text-truncate" style="max-width: 200px;">@(item?.FilePath ?? "Yoxdur")</td>
+                        <td>@(item?.FileExtension ?? "Yoxdur")</td>
+                        <td>@statusText</td>
+                        <td>@formattedCreatedTime</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary @(isDownloadable ? "" : "disabled")"
+                               href="@filePath"
+                               download
+                               title="Yüklə">
+                                <i class="bi bi-download"></i> Yüklə
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">
+            <i class="bi bi-info-circle"></i> Məlumat mövcud deyil.
+        </div>
+    }
+</div>
+
+

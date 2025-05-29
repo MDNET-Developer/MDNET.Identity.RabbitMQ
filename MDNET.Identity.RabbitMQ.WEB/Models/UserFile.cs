@@ -7,8 +7,8 @@
         public string? FileName { get; set; }   
         public string? FilePath { get; set; } 
         public string? FileExtension { get; set; }
-        public bool FileStatus { get; set; } 
+        public int FileStatus { get; set; } 
         public DateTime? CreatedTime { get; set; } = DateTime.UtcNow;
-        public Guid CreatedUserId { get; set; } 
+        public string? CreatedUserId { get; set; } 
     }
 }

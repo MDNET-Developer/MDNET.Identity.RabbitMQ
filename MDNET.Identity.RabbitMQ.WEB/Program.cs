@@ -15,8 +15,7 @@ namespace MDNET.Identity.RabbitMQ.Web
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.Configure<RabbitMQConfugration>(builder.Configuration.GetSection("RabbitMQ"));
             builder.Services.AddRabbitMQClientServiceSingleton(builder.Configuration);
-            builder.Services.AddSingleton<RabbitMQClientService>();
-            builder.Services.AddSingleton<RabbitMQPublisher>();
+            builder.Services.CustomServices();
             builder.Services.AddRazorPages();
             // Add services to the container.
             builder.Services.AddControllersWithViews();

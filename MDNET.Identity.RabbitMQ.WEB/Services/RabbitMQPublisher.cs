@@ -36,6 +36,9 @@ namespace MDNET.Identity.RabbitMQ.Web.Services
           basicProperties: properties,
           body: bodyByte);
             /*
+             Əvvəlcə obyekt JSON formatına çevrilir ki, başqa sistemlər onu asan başa düşsün.
+             Sonra o JSON yazısı byte[]-ə çevrilir, çünki mesaj göndərmək üçün sistemlər mətn yox, byte-lar qəbul edir.
+              
             Davamlılıq (Persistence) ilə bağlı önəmli məlumat:
                RabbitMQ-da bir mesajın davamlı (persistent) olması, onun məlumatların daimi olaraq saxlanılmasını təmin edir. Bu, xüsusən kritik mesajların itilməməsi üçün vacibdir. Lakin davamlılıq əlavə disk əməliyyatlarına səbəb olur və performansı bir qədər azalda bilər.
 
