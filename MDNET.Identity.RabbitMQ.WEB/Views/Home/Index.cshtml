@@ -69,11 +69,7 @@
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Hover zamanı kölgənin genişlənməsi */
 }
 /* Responsive adjustments */
-@@media (max-width: 768px) {
-    .row-cols-md-4 {
-        row-cols-1; /* Mobil cihazlarda yalnız bir kart görünəcək */
-    }
-}
+
     </style>
 </head>
 <body>
@@ -174,46 +170,46 @@
     <button onclick="createFile()">Fayl Yarat</button>
 
     <script>
-        function createFile() {
-            document.getElementById("createFileBtn").disabled = true;
-            $('#createFileBtn').prop('disabled', true);
-            $.ajax({
-                type: 'POST',
-                url: '/file-create',
-                contentType: 'application/json',
-                success: function (response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Uğurlu!',
-                            text: response.message,
-                            timer: 2500,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Xəta',
-                            text: response.message,
-                            timer: 2500,
-                            showConfirmButton: false
-                        });
-                    }
-                },
-                error: function () {
+        async function createFile() {
+            const btn = document.getElementById("createFileBtn");
+            btn.disabled = true;
+
+            try {
+                const response = await $.ajax({
+                    type: 'POST',
+                    url: '/file-create',
+                    contentType: 'application/json'
+                });
+
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Uğurlu!',
+                        text: response.message,
+                        timer: 2500,
+                        showConfirmButton: false
+                    });
+                } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Server Xətası',
-                        text: 'Serverlə əlaqə zamanı problem yarandı.',
+                        title: 'Xəta',
+                        text: response.message,
                         timer: 2500,
                         showConfirmButton: false
                     });
                 }
-            });
-            setTimeout(() => {
-                document.getElementById("createFileBtn").disabled = false;
-            }, 2000);
-           
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Xətası',
+                    text: 'Serverlə əlaqə zamanı problem yarandı.',
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            } finally {
+                // Server cavab verdikdən sonra aktivləşdir
+                btn.disabled = false;
+            }
         }
     </script>
 
