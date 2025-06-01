@@ -38,7 +38,7 @@
                     string statusText = item?.FileStatus == (int)FileStatus.Created ? "Hazırdır ✅" : "Hazırlanır...";
                     bool isDownloadable = item?.FileStatus == (int)FileStatus.Created;
                     string formattedCreatedTime = item?.CreatedTime?.ToLocalTime().ToString("dd.MM.yyyy HH:mm") ?? "Tarix mövcud deyil";
-                    string filePath = item?.FilePath ?? "#";
+                  
 
                     <tr class="@rowClass align-middle">
                         <td>@(item?.FileName ?? "Yoxdur")</td>
@@ -48,7 +48,7 @@
                         <td>@formattedCreatedTime</td>
                         <td>
                             <a class="btn btn-sm btn-outline-primary @(isDownloadable ? "" : "disabled")"
-                               href="@filePath"
+                               href="~/files/@item?.FilePath"
                                download
                                title="Yüklə">
                                 <i class="bi bi-download"></i> Yüklə
