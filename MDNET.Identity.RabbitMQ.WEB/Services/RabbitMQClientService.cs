@@ -22,18 +22,23 @@ namespace MDNET.Identity.RabbitMQ.Web.Services
 
         public IModel Connect()
         {
-            _connection = _connectionFactory.CreateConnection();
-            _channel = _connection.CreateModel();
-            if (_channel !=null && _channel.IsOpen)
+            if (_channel is { IsOpen:true})
             {
                 return _channel;
             }
-            _channel.ExchangeDeclare(exchange: _confugration.ExchangeName, type: ExchangeType.Direct, durable: true, autoDelete: false);
-            _channel.QueueDeclare(queue: _confugration.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
-            _channel.QueueBind(exchange: _confugration.ExchangeName, queue: _confugration.QueueName, routingKey: _confugration.RoutingKey);
-            _logger.LogInformation($"RabbitMQ create connection - {DateTime.UtcNow}");
-            return _channel;
-
+            else
+            {
+                _connection = _connectionFactory.CreateConnection();
+                _channel = _connection.CreateModel();
+                _channel.ExchangeDeclare(exchange: _confugration.ExchangeName, type: ExchangeType.Direct, durable: true, autoDelete: false);
+                _channel.QueueDeclare(queue: _confugration.QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+                _channel.QueueBind(exchange: _confugration.ExchangeName, queue: _confugration.QueueName, routingKey: _confugration.RoutingKey);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                _logger.LogInformation($"RabbitMQ create connection - {DateTime.UtcNow}");
+                Console.ForegroundColor = ConsoleColor.White;
+                return _channel;
+            }
+           
         }
 
         public void Dispose()

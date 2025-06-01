@@ -84,14 +84,46 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
                 await _appDbContext.UserFiles.AddAsync(userFile);
                 await _appDbContext.SaveChangesAsync();
 
-                Shared.CreateFileMessage createFileMessage = new Shared.CreateFileMessage()
+               
+                _ = Task.Run(() =>
                 {
-                    FileId = userFile.Id,
-                    UserId = userFile.CreatedUserId
-                };
-                _ = Task.Run(() => _rabbitMQPublisher.Publish(createFileMessage));
+                    Shared.CreateFileMessage createFileMessage = new Shared.CreateFileMessage()
+                    {
+                        FileId = userFile.Id,
+                        UserId = userFile.CreatedUserId
+                    };
+                    _rabbitMQPublisher.Publish(createFileMessage);
+                }
+               );
 
                 return Json(new { success = true, message = "Fayl yaradıldı və proses başladı." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Fayl yaradılarkən xəta baş verdi.");
+                return Json(new { success = false, message = "Serverdə xəta baş verdi." });
+            }
+        }
+
+        [HttpPost("file-remove")]
+        public async Task<IActionResult> RemoveAllFilesAsync()
+        {
+            try
+            {
+                var userName = User.Identity?.Name;
+                if (string.IsNullOrEmpty(userName))
+                    return Json(new { success = false, message = "İstifadəçi daxil olmayıb." });
+
+                var user = await _userManager.FindByNameAsync(userName);
+                if (user == null)
+                    return Json(new { success = false, message = "İstifadəçi tapılmadı." });
+
+                var datas = _appDbContext.UserFiles.Where(x=>x.CreatedUserId == user.Id).ToList();
+                _appDbContext.UserFiles.RemoveRange(datas);
+
+                await _appDbContext.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Fayllar təmizləndi" });
             }
             catch (Exception ex)
             {

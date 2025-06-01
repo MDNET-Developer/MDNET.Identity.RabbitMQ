@@ -10,7 +10,12 @@
         <div class="mb-3">
             <h2><i class="bi bi-folder2-open"></i> Fayllar</h2>
         </div>
-        
+        @if (Model != null && Model.Any())
+        {
+                <button id="removeFileBtn" onclick="removeFile()" class="btn btn-outline-danger">
+                 🧹 Təmizlə
+                 </button>
+         }
     </div>
 
     @if (Model != null && Model.Any())
@@ -61,5 +66,54 @@
         </div>
     }
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+<script>
+    async function removeFile() {
+        const btn = document.getElementById("removeFileBtn");
+        btn.disabled = true;
+
+        try {
+            const response = await $.ajax({
+                type: 'POST',
+                url: '/file-remove',
+                contentType: 'application/json'
+            });
+
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Uğurlu!',
+                    text: response.message,
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+                location.reload();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: response.message,
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Server Xətası',
+                text: 'Serverlə əlaqə zamanı problem yarandı.',
+                timer: 2500,
+                showConfirmButton: false
+            });
+        } finally {
+            // Server cavab verdikdən sonra aktivləşdir
+            btn.disabled = false;
+        }
+    }
+</script>
 
 
