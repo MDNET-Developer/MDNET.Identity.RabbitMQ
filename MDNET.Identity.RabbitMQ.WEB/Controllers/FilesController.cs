@@ -27,13 +27,17 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
             else
             {
                 var userFile = await _context.UserFiles.FirstOrDefaultAsync(x => x.Id == fileId && x.CreatedUserId == userId);
-                var filePath = userFile.FileName + Path.GetExtension(file.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserFiles", filePath);
-                using FileStream stream = new(path,FileMode.Create);
+
+                var fileFullName = userFile.FileName + Path.GetExtension(file.FileName);
+
+                var pathStream = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserFiles", fileFullName);
+                using FileStream stream = new(pathStream, FileMode.Create);
                 await file.CopyToAsync(stream);
+
                 userFile.CreatedTime = DateTime.Now;
-                userFile.FilePath= path;
+                userFile.FilePath= "~/UserFiles/" + fileFullName;
                 userFile.FileStatus = (int)FileStatus.Created;
+                userFile.FileExtension = Path.GetExtension(fileFullName);
                 await _context.SaveChangesAsync();
                 return Ok();
             }

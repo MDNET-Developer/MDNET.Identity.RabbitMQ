@@ -48,7 +48,7 @@
                         <td>@formattedCreatedTime</td>
                         <td>
                             <a class="btn btn-sm btn-outline-primary @(isDownloadable ? "" : "disabled")"
-                               href="~/files/@item?.FilePath"
+                               href="@Url.Content(item.FilePath)"
                                download
                                title="Yüklə">
                                 <i class="bi bi-download"></i> Yüklə
