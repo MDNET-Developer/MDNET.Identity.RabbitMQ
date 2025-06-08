@@ -3,6 +3,7 @@
     ViewData["Title"] = "Files";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 <div class="container-fuild">
@@ -83,24 +84,16 @@
                 contentType: 'application/json'
             });
 
-            if (response.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Uğurlu!',
-                    text: response.message,
-                    timer: 2500,
-                    showConfirmButton: false
-                });
-                location.reload();
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Xəta',
-                    text: response.message,
-                    timer: 2500,
-                    showConfirmButton: false
-                });
-            }
+         
+            Swal.fire({
+                icon: 'success',
+                title: 'Uğurla silindi',
+                text: 'Fayl uğurla silindi.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            location.reload();
+
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -110,10 +103,11 @@
                 showConfirmButton: false
             });
         } finally {
-            // Server cavab verdikdən sonra aktivləşdir
+          
             btn.disabled = false;
         }
     }
+
 </script>
 
 

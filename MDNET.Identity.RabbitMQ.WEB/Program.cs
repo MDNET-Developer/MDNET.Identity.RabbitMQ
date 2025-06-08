@@ -5,6 +5,7 @@ using MDNET.Identity.RabbitMQ.Web.Extensions;
 using Microsoft.Extensions.Options;
 using MDNET.Identity.RabbitMQ.Web.Confugration;
 using MDNET.Identity.RabbitMQ.Web.Services;
+using MDNET.Identity.RabbitMQ.Web.Hubs;
 
 namespace MDNET.Identity.RabbitMQ.Web
 {
@@ -40,7 +41,7 @@ namespace MDNET.Identity.RabbitMQ.Web
             app.UseRouting();
             app.UseAuthentication(); 
             app.UseAuthorization();
-
+            app.MapHub<MyHub>("/MyHub");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

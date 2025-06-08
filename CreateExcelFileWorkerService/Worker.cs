@@ -45,7 +45,7 @@ namespace CreateExcelFileWorkerService
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
             _logger.LogInformation("Consumer_Received started...");
-            await Task.Delay(7000); // test üçündürsə, sil və ya qeyd əlavə et
+            await Task.Delay(5000); 
 
             var createExcelMessage = JsonSerializer.Deserialize<CreateFileMessage>(Encoding.UTF8.GetString(@event.Body.ToArray()));
 

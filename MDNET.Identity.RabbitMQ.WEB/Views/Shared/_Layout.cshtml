@@ -57,6 +57,48 @@
                 footer a:hover {
                     color: #ff6347; /* Hover narıncı rəng */
                 }
+
+        #notifyBox {
+            position: fixed;
+            top: 20px;
+            right: -350px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            padding: 16px 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: right 0.5s ease;
+            z-index: 9999;
+            min-width: 280px;
+            max-width: 340px;
+            font-family: "Segoe UI", sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height:75px;
+            border-left: 6px solid #00c853; 
+        }
+
+            #notifyBox span {
+                flex: 1;
+                font-size: 17px;
+                line-height: 1.5;
+            }
+
+            #notifyBox button {
+                background: none;
+                border: none;
+                color: #ffffff;
+                font-size: 20px;
+                cursor: pointer;
+                transition: color 0.2s ease;
+            }
+
+                #notifyBox button:hover {
+                    color: #e74c3c;
+                }
+
+      
     </style>
 </head>
 <body>
@@ -129,12 +171,64 @@
             @RenderBody()
         </main>
     </div>
+    <div id="notifyBox">
+        <span id="notifyMessage">Bildiriş mesajı buraya gələcək</span>
+        <button id="closeNotify">✖</button>
+    </div>
+   
+
 
     <footer>
         <div class="container">
             &copy; 2025 - MDNET-Developer(Murad Aliyev) - <a asp-area="" asp-controller="Home" asp-action="Privacy">Haqqımızda</a>
         </div>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js" integrity="sha512-7SRCYIJtR6F8ocwW7UxW6wGKqbSyqREDbfCORCbGLatU0iugBLwyOXpzhkPyHIFdBO0K2VCu57fvP2Twgx1o2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function () {
+           
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/MyHub")
+                .build();
+
+                    connection.start()
+                .then(function () {
+                    console.log("SignalR connected succesfully✅.");
+                })
+                .catch(function (err) {
+                    console.error("Error:", err.toString());
+                });
+
+            connection.on("ComplatedFile", function () {
+                showNotification("Fayl uğurla tamamlandı ✅");
+            });
+
+            
+           
+        });
+
+
+        function showNotification(message) {
+            const box = document.getElementById("notifyBox");
+            const msg = document.getElementById("notifyMessage");
+
+            msg.textContent = message;
+            box.style.right = "20px"; 
+
+           
+            setTimeout(() => {
+                hideNotification();
+            }, 7000);
+        }
+
+        function hideNotification() {
+            document.getElementById("notifyBox").style.right = "-350px";
+        }
+
+        document.getElementById("closeNotify").addEventListener("click", hideNotification);
+
+    </script>
+   
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

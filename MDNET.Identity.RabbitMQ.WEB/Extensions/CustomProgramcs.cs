@@ -27,6 +27,7 @@ namespace MDNET.Identity.RabbitMQ.Web.Extensions
         {
             services.AddSingleton<RabbitMQClientService>();
             services.AddSingleton<RabbitMQPublisher>();
+            services.AddSignalR();
         }
         public static void AddIdentityWithPolicy(this IServiceCollection services)
         {

@@ -1,7 +1,9 @@
 ﻿using MDNET.Identity.RabbitMQ.Web.Enums;
+using MDNET.Identity.RabbitMQ.Web.Hubs;
 using MDNET.Identity.RabbitMQ.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MDNET.Identity.RabbitMQ.Web.Controllers
@@ -11,10 +13,12 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
     public class FilesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public FilesController(AppDbContext context)
+        public FilesController(AppDbContext context, IHubContext<MyHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
         [HttpPost]
         [Route("upload-file")]
@@ -39,6 +43,7 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
                 userFile.FileStatus = (int)FileStatus.Created;
                 userFile.FileExtension = Path.GetExtension(fileFullName);
                 await _context.SaveChangesAsync();
+                await _hubContext.Clients.User(userFile.CreatedUserId).SendAsync("ComplatedFile");
                 return Ok();
             }
         }

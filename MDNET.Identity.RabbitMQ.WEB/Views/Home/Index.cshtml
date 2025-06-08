@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -160,14 +161,11 @@
 
     </div>
     </section>
-    <a id="createBtn" class="btn btn-primary @(User.Identity == null || !User.Identity.IsAuthenticated ? "disabled" : "")">
-        Fayl yarat
-    </a>
+   
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <button onclick="createFile()">Fayl Yarat</button>
 
     <script>
         async function createFile() {

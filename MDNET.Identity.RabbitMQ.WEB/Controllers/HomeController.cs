@@ -53,7 +53,7 @@ namespace MDNET.Identity.RabbitMQ.Web.Controllers
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
             var userFiles = _appDbContext.UserFiles
                 .Where(f => f.CreatedUserId == user.Id)
-                .OrderBy(f => f.CreatedTime)
+                .OrderByDescending(f => f.CreatedTime)
                 .ToList();
 
             return View(userFiles);
